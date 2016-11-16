@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		5AE32A9A1DDC6CFA004D6CC2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AE32A991DDC6CFA004D6CC2 /* main.cpp */; };
+		5AE32AA21DDC6D6D004D6CC2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE32AA11DDC6D6D004D6CC2 /* Foundation.framework */; };
+		5AE32AA41DDC6D73004D6CC2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE32AA31DDC6D73004D6CC2 /* OpenGL.framework */; };
+		5AE32AA61DDC6D7C004D6CC2 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE32AA51DDC6D7C004D6CC2 /* GLKit.framework */; };
+		5AE32AA81DDC6D82004D6CC2 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE32AA71DDC6D82004D6CC2 /* GLUT.framework */; };
+		5AE32AAB1DDC6DAE004D6CC2 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AE32AA91DDC6DAE004D6CC2 /* Ball.cpp */; };
+		5AE32AAE1DDC6DFB004D6CC2 /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AE32AAC1DDC6DFB004D6CC2 /* Collision.cpp */; };
+		5AE32AB11DDC6E2C004D6CC2 /* Pocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AE32AAF1DDC6E2C004D6CC2 /* Pocket.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +32,16 @@
 /* Begin PBXFileReference section */
 		5AE32A961DDC6CFA004D6CC2 /* BilliardsOpenGL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BilliardsOpenGL; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE32A991DDC6CFA004D6CC2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5AE32AA11DDC6D6D004D6CC2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5AE32AA31DDC6D73004D6CC2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		5AE32AA51DDC6D7C004D6CC2 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		5AE32AA71DDC6D82004D6CC2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		5AE32AA91DDC6DAE004D6CC2 /* Ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
+		5AE32AAA1DDC6DAE004D6CC2 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
+		5AE32AAC1DDC6DFB004D6CC2 /* Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collision.cpp; sourceTree = "<group>"; };
+		5AE32AAD1DDC6DFB004D6CC2 /* Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collision.h; sourceTree = "<group>"; };
+		5AE32AAF1DDC6E2C004D6CC2 /* Pocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pocket.cpp; sourceTree = "<group>"; };
+		5AE32AB01DDC6E2C004D6CC2 /* Pocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pocket.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +49,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE32AA81DDC6D82004D6CC2 /* GLUT.framework in Frameworks */,
+				5AE32AA61DDC6D7C004D6CC2 /* GLKit.framework in Frameworks */,
+				5AE32AA41DDC6D73004D6CC2 /* OpenGL.framework in Frameworks */,
+				5AE32AA21DDC6D6D004D6CC2 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +64,7 @@
 			children = (
 				5AE32A981DDC6CFA004D6CC2 /* BilliardsOpenGL */,
 				5AE32A971DDC6CFA004D6CC2 /* Products */,
+				5AE32AA01DDC6D6D004D6CC2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,8 +80,25 @@
 			isa = PBXGroup;
 			children = (
 				5AE32A991DDC6CFA004D6CC2 /* main.cpp */,
+				5AE32AA91DDC6DAE004D6CC2 /* Ball.cpp */,
+				5AE32AAA1DDC6DAE004D6CC2 /* Ball.h */,
+				5AE32AAC1DDC6DFB004D6CC2 /* Collision.cpp */,
+				5AE32AAD1DDC6DFB004D6CC2 /* Collision.h */,
+				5AE32AAF1DDC6E2C004D6CC2 /* Pocket.cpp */,
+				5AE32AB01DDC6E2C004D6CC2 /* Pocket.h */,
 			);
 			path = BilliardsOpenGL;
+			sourceTree = "<group>";
+		};
+		5AE32AA01DDC6D6D004D6CC2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5AE32AA71DDC6D82004D6CC2 /* GLUT.framework */,
+				5AE32AA51DDC6D7C004D6CC2 /* GLKit.framework */,
+				5AE32AA31DDC6D73004D6CC2 /* OpenGL.framework */,
+				5AE32AA11DDC6D6D004D6CC2 /* Foundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +158,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE32AAB1DDC6DAE004D6CC2 /* Ball.cpp in Sources */,
+				5AE32AB11DDC6E2C004D6CC2 /* Pocket.cpp in Sources */,
+				5AE32AAE1DDC6DFB004D6CC2 /* Collision.cpp in Sources */,
 				5AE32A9A1DDC6CFA004D6CC2 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,6 +258,7 @@
 		5AE32A9E1DDC6CFA004D6CC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -223,6 +266,7 @@
 		5AE32A9F1DDC6CFA004D6CC2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

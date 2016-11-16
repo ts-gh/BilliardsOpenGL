@@ -1,14 +1,8 @@
-//
-//  Collision.hpp
-//  BilliardsOpenGL
-//
-//  Created by TakedaSohei on 2016/11/16.
-//  Copyright © 2016年 TakedaSohei. All rights reserved.
-//
+#pragma once
 
-#ifndef Collision_hpp
-#define Collision_hpp
+#include <GLUT/GLUT.h>
+#include "glm/glm.hpp"
+#include "glm/vec3.hpp"
+#include "Ball.h"
 
-#include <stdio.h>
-
-#endif /* Collision_hpp */
+void CollisionBallCheck(Ball*);
