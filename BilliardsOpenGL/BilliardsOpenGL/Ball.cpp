@@ -184,6 +184,11 @@ void Ball::SetIsExsist(bool _isExsist)
     isExist = _isExsist;
 }
 
+int Ball::GetID()
+{
+    return id;
+}
+
 float Ball::GetRadius()
 {
     return radius;

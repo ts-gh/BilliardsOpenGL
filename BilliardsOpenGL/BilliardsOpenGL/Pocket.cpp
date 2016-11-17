@@ -28,7 +28,7 @@ void Pocket::Render()
     glPopMatrix();
 }
 
-void Pocket::FallPocketCheck(Ball *ball)
+void Pocket::FallPocketCheck(Ball *ball, int targetBall)
 {
     for(int i=0; i<9; i++){
         if(!ball[i].GetIsExist()){
@@ -49,7 +49,22 @@ void Pocket::FallPocketCheck(Ball *ball)
     }
 }
 
+void Pocket::FoulsCheck()
+{
+
+}
+
 void Pocket::Release()
 {
     
+}
+
+glm::vec3 Pocket::GetPosition()
+{
+    return position;
+}
+
+float Pocket::GetRadius()
+{
+    return radius;
 }
