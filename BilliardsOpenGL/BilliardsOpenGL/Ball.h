@@ -4,8 +4,6 @@
 #include "glm/glm.hpp"
 #include "glm/vec3.hpp"
 
-//float radius;
-
 class Ball
 {
 private:
@@ -18,9 +16,7 @@ public:
     void Initialize(int id, glm::vec3 pos);
     void AddVelocity(glm::vec3 v);
     void Update();
-    //void CollisionBallCheck(Ball ball[]);
     void CollisionWallCheck();
-    void FallPocketCheck();
     void Render();
     void Release();
     glm::vec3 GetPosition();

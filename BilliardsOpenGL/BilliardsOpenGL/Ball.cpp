@@ -1,7 +1,6 @@
 #include "Ball.h"
 
 float wallBounce = 0.7;    //壁とボールの反発係数
-//float ballBounce = 0.9;    //ボールとボールの反発係数
 float poolTable_width = 160;
 float poolTable_height = 290;
 
@@ -25,7 +24,7 @@ void Ball::Update()
     if(isExist){
         position += velocity;
         
-        //速度減衰　ー＞　摩擦、空気抵抗、跳ね返り係数・・・
+        //速度減衰　ー＞　摩擦、空気抵抗、跳ね返り係数・・・　deltaTimeを使う
         velocity *= 0.98f;
         
         //速度が一定以下になれば止める（速度0に）
@@ -34,15 +33,6 @@ void Ball::Update()
         }
     }
 }
-
-//void Ball::CollisionBallCheck(Ball ball[]){
-//    for(int i=0; i<16; i++){
-//        for(int j=0; j<16; j++){
-//            if(radius * radius > (ball[i].position.x - ball[j].position.x)){
-//            }
-//        }
-//    }
-//}
 
 void Ball::CollisionWallCheck(){
     //左の壁（z軸上にある）との衝突判定
@@ -71,47 +61,12 @@ void Ball::CollisionWallCheck(){
     }
 }
 
-//超シビアなポケット判定
-void Ball::FallPocketCheck()
-{
-    //左上
-    if(position.x <= (poolTable_width/2) * -1 && position.z <= (poolTable_height/2) * -1){
-        isExist = false;
-    }
-    //右上
-    if(position.x >= (poolTable_width/2) && position.z <= (poolTable_height/2) * -1){
-        isExist = false;
-    }
-    //右中
-    if(position.x >= (poolTable_width/2) && position.z == 0.f){
-        isExist = false;
-    }
-    //右下
-    if(position.x >= (poolTable_width/2) && position.z >= (poolTable_height/2)){
-        isExist = false;
-    }
-    //左下
-    if(position.x <= (poolTable_width/2) * -1 && position.z >= (poolTable_height/2)){
-        isExist = false;
-    }
-    //左中
-    if(position.x >= (poolTable_width/2) * -1 && position.z == 0.f){
-        isExist = false;
-    }
-}
-
 void Ball::Render()
 {
-    
-    // push
+    //push
     glPushMatrix();
     
-    // 行列のリセット
-    //glLoadIdentity();
-    
-    // 色の設定
-    //glColor3d(1.0, 0.0, 0.0);
-    
+    //IDにあったカラーのセット
     if(id == 0){
         glColor3d(1.0, 1.0, 1.0);
     }
@@ -143,20 +98,20 @@ void Ball::Render()
         glColor3d(1.0, 1.0, 0.5);
     }
     
-    // 移動
+    //移動
     glTranslatef(position.x, position.y, position.z);
     
-    // 球の描画
+    //球の描画
     glutSolidSphere(radius, 16, 16);
     
-    // pop
+    //pop
     glPopMatrix();
     
 }
 
 void Ball::Release()
 {
-    
+    //未実装
 }
 
 glm::vec3 Ball::GetPosition()

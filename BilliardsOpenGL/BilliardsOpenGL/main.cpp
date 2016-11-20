@@ -20,16 +20,16 @@ unsigned char m_key;
 float deltaTime;
 float power;
 
-//ナインボールなので・・・
+//ナインボールなので
 Ball ball[10];
 
-//UI用
+//UI用のボール
 Ball ballUI[9];
 
 //Pocket
 Pocket pocket[6];
 
-//落とすべきボール
+//落とすべきボール（ID）
 int targetBall;
 
 //Scene管理
@@ -41,30 +41,21 @@ typedef enum {
 
 static int Scene = eScene_Menu; //defaltでメニュー画面
 
-//GameScene内の　打つ時　動いてる時（ターン）　を管理
-//typedef enum {
-//    eTurn_Shoot,
-//    eTurn_Move,
-//} eTurn;
-//static int Turn = eTurn_Shoot;
+//Foulsの種類を別々のフラグで管理
+bool foulsDiffBallFlg;  //targetBall以外を落としたら
+bool foulsCueBallFlg;   //白球を落としたら
 
-bool foulsDiffBallFlg;
-bool foulsCueBallFlg;
-
-bool clearFlg;
+bool gameClearFlg;
 
 //プロトタイプ宣言
 void display(void);
 void idle(void);
 void Initialize();
-void RenderCube(float width, float height, float depth);
-//void mouse_motion(int button, int state, int x, int y);
 void mouse_on(int button, int state, int x, int y);
-//void _CollisionBallCheck(Ball *ball);
 void InitializeBallPosition(Ball *ball);
+void InitializeBallOrderUI(Ball *ball);
 void InitializePocketPosition(Pocket *pocket);
 void PowerGaugeUI(float deltaTime);
-void InitializeBallOrderUI(Ball *ball);
 void DrawString(const char *str, void *font, float Width, float x, float y, float z);
 void keybord(unsigned char key, int x, int y);
 void Game();
@@ -72,8 +63,9 @@ void Menu();
 void Result();
 void UpdateScene();
 bool CanShootBall(Ball *ball);
-void _FallPocketCheck(Pocket *pocket, Ball *ball);
+void FallPocketCheck(Pocket *pocket, Ball *ball);
 bool GameClearCheck(Ball *ball);
+//void RenderCube(float width, float height, float depth);  //のちに使うかも・・・
 
 //main関数
 int main(int argc, char *argv[])
@@ -87,7 +79,6 @@ int main(int argc, char *argv[])
     glutIdleFunc(idle);
     glutMouseFunc(mouse_on);
     glutKeyboardFunc(keybord);
-    //glutMouseFunc(mouse_motion);
     Initialize();                                                   //初期化
     glutMainLoop();
     return 0;
@@ -100,27 +91,19 @@ void Initialize()
     glEnable(GL_DEPTH_TEST);                //デプスバッファを使用：glutInitDisplayMode() で GLUT_DEPTH を指定する
     
     InitializeBallPosition(ball);
-    
-    InitializePocketPosition(pocket);
-    
     InitializeBallOrderUI(ball);
+    InitializePocketPosition(pocket);
     
     targetBall = 1;
     foulsDiffBallFlg = false;
     foulsCueBallFlg = false;
-    clearFlg = false;
-    
-    //    for(int i=0; i<10; i++){
-    //        ball[i].Initialize(glm::vec3((float)i, 0.f, (float)i));
-    //        ball[i].AddVelocity(glm::vec3((float)i*10, 0.f, (float)i*10));
-    //    }
+    gameClearFlg = false;
 }
 
 //描画関数 (1Fに1回呼ばれる)
 void display(void)
 {
-    deltaTime = glutGet(GLUT_ELAPSED_TIME)/1000.f;
-    //printf("%f\n",deltaTime);
+    deltaTime = glutGet(GLUT_ELAPSED_TIME)/1000.f;  //ミリ秒(ms) ->　秒(s)　に変換
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //バッファの削除
     glMatrixMode(GL_PROJECTION);
@@ -131,13 +114,6 @@ void display(void)
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
-    //視点の設定
-    /*gluLookAt(
-              0.0, 550.0, 0.0,    //視点の位置x,y,z;
-              0.0, 0.0, 0.0,        //視界の中心位置の参照点座標x,y,z
-              0.0, 0.0, -1.0);       //視界の上方向のベクトルx,y,z
-    */
 
     switch(Scene){
         case eScene_Menu:
@@ -154,67 +130,6 @@ void display(void)
     
     UpdateScene();
     
-    /*
-    //カラー指定
-    glColor3d(1.0, 1.0, 1.0);
-    //線描画スタイルの指定
-    glBegin(GL_LINE_LOOP);
-    
-    //頂点指定
-    glVertex3d(-80.0, 0.0, -145.0);
-    glVertex3d(80.0, 0.0, -145.0);
-    glVertex3d(80.0, 0.0, 145.0);
-    glVertex3d(-80.0, 0.0, 145.0);
-    
-    //線描画スタイルの指定終了
-    glEnd();
-    
-    PowerGaugeUI(deltaTime);
-    
-    //BallUIのRender
-    for(int i=0; i<10; i++){
-        //本家のボールが存在してたら
-        if(ball[i+1].GetIsExist()){
-            ballUI[i].Render();
-        }
-    }
-    
-    // BallのUpdate
-    for(int i=0; i<10; i++){
-        ball[i].Update();
-    }
-    
-    // BallのCollisionWallCheck
-    for(int i=0; i<10; i++){
-        ball[i].CollisionWallCheck();
-    }
-    
-    //Ballのポケットに落ちたかのチェック
-    for(int i=0; i<10; i++){
-        ball[i].FallPocketCheck();
-    }
-    
-    // BallのCollisionBallCheck
-    CollisionBallCheck(ball);
-    
-    // BallのRender
-    for(int i=0; i<10; i++){
-        if(ball[i].GetIsExist()){
-            ball[i].Render();
-        }
-    }
-    
-    //pocketのrender
-    for(int i=0; i<6; i++){
-        pocket[i].Render();
-    }
-    
-    //pocketのfallcheck
-    for(int i=0; i<6; i++){
-        pocket[i].FallPocketCheck(ball);
-    }
-    */
-    
     glutSwapBuffers();  //glutInitDisplayMode(GLUT_DOUBLE)でダブルバッファリングを利用可
 }
 
@@ -223,89 +138,39 @@ void idle(void)
     glutPostRedisplay();
 }
 
-void RenderCube(float width,float height,float depth)
-{
-    glBegin(GL_QUADS);
-    
-    //前
-    glNormal3f(0.0,0.0,-1.0);
-    glVertex3f(width/2,height/2,depth/2);
-    glVertex3f(-width/2,height/2,depth/2);
-    glVertex3f(-width/2,-height/2,depth/2);
-    glVertex3f(width/2,-height/2,depth/2);
-    
-    //左
-    glNormal3f(1.0,0.0,0.0);
-    glVertex3f(width/2,height/2,depth/2);
-    glVertex3f(width/2,height/2,-depth/2);
-    glVertex3f(width/2,-height/2,-depth/2);
-    glVertex3f(width/2,-height/2,depth/2);
-    
-    //右
-    glNormal3f(-1.0,0.0,0.0);
-    glVertex3f(-width/2,height/2,-depth/2);
-    glVertex3f(-width/2,height/2,depth/2);
-    glVertex3f(-width/2,-height/2,depth/2);
-    glVertex3f(-width/2,-height/2,-depth/2);
-    
-    //後
-    glNormal3f(0.0,0.0,1.0);
-    glVertex3f(width/2,height/2,-depth/2);
-    glVertex3f(-width/2,height/2,-depth/2);
-    glVertex3f(-width/2,-height/2,-depth/2);
-    glVertex3f(width/2,-height/2,-depth/2);
-    
-    //上
-    glNormal3f(0.0,1.0,0.0);
-    glVertex3f(width/2,height/2,depth/2);
-    glVertex3f(-width/2,height/2,depth/2);
-    glVertex3f(-width/2,height/2,-depth/2);
-    glVertex3f(width/2,height/2,-depth/2);
-    
-    //下
-    glNormal3f(0.0,-1.0,0.0);
-    glVertex3f(width/2,-height/2,depth/2);
-    glVertex3f(-width/2,-height/2,depth/2);
-    glVertex3f(-width/2,-height/2,-depth/2);
-    glVertex3f(width/2,-height/2,-depth/2);
-    glEnd();
-}
-
 void mouse_on(int button, int state, int x, int y)
 {
-    //printf("呼ばれたよ");
-    
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
         if(CanShootBall(ball)){
             //マウスの位置を取得
             mouse_x = x;
             mouse_y = y;
         
-            //ワールド座標に変換 y->z
+            //ワールド座標に変換（ウィンドウサイズとマウス位置から比率で算出　このとき、y -> z　に）
             glm::vec3 mouse_wpos = glm::vec3(300.f/512.f * (mouse_x-256), 0.f, 300.f/512.f * (mouse_y-256));
-            //float mouse_wx = 290/512 * mouse_x;
-            //float mouse_wz = 290/512 * mouse_y;
-        
-            //printf("%.1f,%.1f,%.1f\n",mouse_wpos.x,mouse_wpos.y,mouse_wpos.z);
                 
             if(!foulsDiffBallFlg){
                 //ボールのポジション取得
                 glm::vec3 ball_pos = ball[0].GetPosition();
         
-                //距離からベクトルを求める
+                //位置からベクトルを求める
                 glm::vec3 v = mouse_wpos - ball_pos;
         
                 //単位ベクトル化
                 glm::vec3 _v = glm::normalize(v);
             
-                //printf("%.1f,%.1f,%.1f\n",v.x,v.y,v.z);
-            
                 //速度に設定
                 ball[0].AddVelocity(_v * power);
             } else {
+                //速度を0に設定
                 ball[0].AddVelocity(glm::vec3(0.f));
+                
+                //クリック位置に移動
                 ball[0].SetPosition(mouse_wpos);
+                
+                //白球が落ちてたら
                 if(foulsCueBallFlg){
+                    //可視化する
                     ball[0].SetIsExsist(true);
                     foulsCueBallFlg = false;
                 }
@@ -317,7 +182,7 @@ void mouse_on(int button, int state, int x, int y)
 
 void InitializeBallPosition(Ball *ball)
 {
-    //キューで打たれる白い球
+    //キューで打たれる白球
     ball[0].Initialize(0, glm::vec3(0.f, 0.f, 100.f));
     
     //他の球（本来は1,9以外は自由におけるがご勘弁を）
@@ -345,15 +210,14 @@ void InitializePocketPosition(Pocket *pocket)
 
 void PowerGaugeUI(float deltaTime)
 {
-    //10分割
+    //小数点以下をパワーゲージに使用
     float tmp = deltaTime;
     float tmp2 = tmp - (int)tmp;
     
-    //パワーゲージに応じたパワーの設定
+    //パワーゲージに応じたパワーの設定（15.fは任意）
     power = 15.f * tmp2;
-    //printf("%f\n",tmp2);
     
-    //外身
+    //外身（左上から時計回りに）
     glBegin(GL_LINE_LOOP);
     glVertex3i(100, 0, 30);
     glVertex3i(120, 0, 30);
@@ -361,9 +225,8 @@ void PowerGaugeUI(float deltaTime)
     glVertex3i(100, 0, 110);
     glEnd();
     
-    //中身
+    //中身（左上から時計回りに）
     glBegin(GL_QUADS);
-    //左上から時計回りに
     glVertex3i(100, 0, 110 - tmp2*80);
     glVertex3i(120, 0, 110 - tmp2*80);
     glVertex3i(120, 0, 110);
@@ -378,6 +241,7 @@ void InitializeBallOrderUI(Ball *ball)
         ballUI[i] = ball[i+1];
     }
     
+    //画面左端に縦に並べる
     for(int i=0; i<9; i++){
         ballUI[i].SetPosition(glm::vec3(-110.f, 0.f, -120.f+30*i));
     }
@@ -390,8 +254,9 @@ void UpdateScene()
     }
     if(m_key == 'm'){
         Scene = eScene_Menu;
+        Initialize();
     }
-    if(GameClearCheck(ball) || m_key == 'r'){
+    if(GameClearCheck(ball) || m_key == 'r'){   //Debug用に'r'キーでも遷移するように
         Scene = eScene_Result;
         Initialize();
     }
@@ -401,24 +266,27 @@ void Menu()
 {
     //視点の設定
     gluLookAt(
-              0.0, 0.0, 1000.0,    //視点の位置x,y,z;
+              0.0, 0.0, 1000.0,     //視点の位置x,y,z;
               0.0, 0.0, 0.0,        //視界の中心位置の参照点座標x,y,z
               0.0, 1.0, 0.0);       //視界の上方向のベクトルx,y,z
     
     DrawString("Billiards", GLUT_STROKE_ROMAN, 5.f, -210.f, -50.f, 0.f);
-    //DrawString("Press Enter", GLUT_STROKE_ROMAN, 5.f, -600.f, -70.f, 0.f);
+    //DrawString("Press Enter", GLUT_STROKE_ROMAN, 5.f, -600.f, -70.f, 0.f);    //のちに実装予定
 }
 
 void Game()
 {
     //視点の設定
     gluLookAt(
-              0.0, 550.0, 0.0,    //視点の位置x,y,z;
+              0.0, 550.0, 0.0,      //視点の位置x,y,z;
               0.0, 0.0, 0.0,        //視界の中心位置の参照点座標x,y,z
-              0.0, 0.0, -1.0);       //視界の上方向のベクトルx,y,z
+              0.0, 0.0, -1.0);      //視界の上方向のベクトルx,y,z
     
+    
+    /*-- Poolの壁を描画（とりあえずGame内で）--*/
     //カラー指定
     glColor3d(1.0, 1.0, 1.0);
+    
     //線描画スタイルの指定
     glBegin(GL_LINE_LOOP);
     
@@ -430,64 +298,55 @@ void Game()
     
     //線描画スタイルの指定終了
     glEnd();
+    /*-- /Poolの壁を描画（とりあえずGame内で）--*/
     
-    //球が打てる状況なら
+    //球が打てる状況ならパワーゲージを表示
     if(CanShootBall(ball) && !foulsCueBallFlg && !foulsDiffBallFlg){
         PowerGaugeUI(deltaTime);
     }
     
     //BallUIのRender
     for(int i=0; i<10; i++){
-        //本家のボールが存在してたら
+        //本家のボールが存在してたらRender
         if(ball[i+1].GetIsExist()){
             ballUI[i].Render();
         }
     }
     
-    // BallのUpdate
+    //BallのUpdate
     for(int i=0; i<10; i++){
         ball[i].Update();
     }
     
-    // BallのCollisionWallCheck
+    //Ballと壁とのCollisionチェック
     for(int i=0; i<10; i++){
         ball[i].CollisionWallCheck();
     }
     
-    //Ballのポケットに落ちたかのチェック
-    for(int i=0; i<10; i++){
-        ball[i].FallPocketCheck();
-    }
-    
-    // BallのCollisionBallCheck
+    //Ball同士のCollisionチェック
     CollisionBallCheck(ball);
     
-    // BallのRender
+    //BallのRender
     for(int i=0; i<10; i++){
         if(ball[i].GetIsExist()){
             ball[i].Render();
         }
     }
     
-    //pocketのrender
+    //PocketのRender
     for(int i=0; i<6; i++){
         pocket[i].Render();
     }
     
-    //pocketのfallcheck
-    //for(int i=0; i<6; i++){
-    //    pocket[i].FallPocketCheck(ball, targetBall);
-    //}
-    
     //pocketとballのcheck
-    _FallPocketCheck(pocket, ball);
+    FallPocketCheck(pocket, ball);
 }
 
 void Result()
 {
     //視点の設定
     gluLookAt(
-              0.0, 0.0, 1000.0,    //視点の位置x,y,z;
+              0.0, 0.0, 1000.0,     //視点の位置x,y,z;
               0.0, 0.0, 0.0,        //視界の中心位置の参照点座標x,y,z
               0.0, 1.0, 0.0);       //視界の上方向のベクトルx,y,z
     
@@ -497,7 +356,6 @@ void Result()
 void keybord(unsigned char key, int x, int y)
 {
     m_key = key;
-    //printf("%c", m_key);
 }
 
 void DrawString(const char *str, void *font, float Width, float x, float y, float z)
@@ -506,7 +364,7 @@ void DrawString(const char *str, void *font, float Width, float x, float y, floa
     glLineWidth(Width);
     glColor3d(1.f, 1.f, 1.f);
     glTranslatef(x, y, z);
-    //glScalef(0.7, 0.7, 0.7);
+    //glScalef(0.7, 0.7, 0.7);  //のちに使うかも
     while(*str){
         glutStrokeCharacter(font, *str);
         ++str;
@@ -516,9 +374,6 @@ void DrawString(const char *str, void *font, float Width, float x, float y, floa
 
 bool CanShootBall(Ball *ball)
 {
-    //if(foulsDiffBallFlg || foulsCueBallFlg){
-    //    return false;
-    //}
     for(int i=0; i<10; i++){
         if(!ball[i].GetIsExist()){
             continue;
@@ -530,7 +385,7 @@ bool CanShootBall(Ball *ball)
     return true;
 }
 
-void _FallPocketCheck(Pocket *pocket, Ball *ball)
+void FallPocketCheck(Pocket *pocket, Ball *ball)
 {
     for(int i=0; i<6; i++){
         for(int j=0; j<10; j++){
@@ -552,12 +407,10 @@ void _FallPocketCheck(Pocket *pocket, Ball *ball)
                 //ファウル行為（ターゲット以外を落としちゃった）
                 if(ball[j].GetID() != targetBall){
                     foulsDiffBallFlg = true;
-                    printf("foulsDiff:%d\n", (int)foulsDiffBallFlg);
                     
-                    //それが手玉なら
+                    //それが白球なら
                     if(ball[j].GetID() == 0){
                         foulsCueBallFlg = true;
-                        printf("foulsCue:%d\n", (int)foulsCueBallFlg);
                     }
                 } else {    //ちゃんとターゲットを落としたらターゲットを進める
                     for(int k=1; k<10; k++){
@@ -580,3 +433,53 @@ bool GameClearCheck(Ball *ball){
     }
     return true;
 }
+
+/*
+ void RenderCube(float width,float height,float depth)
+ {
+ glBegin(GL_QUADS);
+ 
+ //前
+ glNormal3f(0.0,0.0,-1.0);
+ glVertex3f(width/2,height/2,depth/2);
+ glVertex3f(-width/2,height/2,depth/2);
+ glVertex3f(-width/2,-height/2,depth/2);
+ glVertex3f(width/2,-height/2,depth/2);
+ 
+ //左
+ glNormal3f(1.0,0.0,0.0);
+ glVertex3f(width/2,height/2,depth/2);
+ glVertex3f(width/2,height/2,-depth/2);
+ glVertex3f(width/2,-height/2,-depth/2);
+ glVertex3f(width/2,-height/2,depth/2);
+ 
+ //右
+ glNormal3f(-1.0,0.0,0.0);
+ glVertex3f(-width/2,height/2,-depth/2);
+ glVertex3f(-width/2,height/2,depth/2);
+ glVertex3f(-width/2,-height/2,depth/2);
+ glVertex3f(-width/2,-height/2,-depth/2);
+ 
+ //後
+ glNormal3f(0.0,0.0,1.0);
+ glVertex3f(width/2,height/2,-depth/2);
+ glVertex3f(-width/2,height/2,-depth/2);
+ glVertex3f(-width/2,-height/2,-depth/2);
+ glVertex3f(width/2,-height/2,-depth/2);
+ 
+ //上
+ glNormal3f(0.0,1.0,0.0);
+ glVertex3f(width/2,height/2,depth/2);
+ glVertex3f(-width/2,height/2,depth/2);
+ glVertex3f(-width/2,height/2,-depth/2);
+ glVertex3f(width/2,height/2,-depth/2);
+ 
+ //下
+ glNormal3f(0.0,-1.0,0.0);
+ glVertex3f(width/2,-height/2,depth/2);
+ glVertex3f(-width/2,-height/2,depth/2);
+ glVertex3f(-width/2,-height/2,-depth/2);
+ glVertex3f(width/2,-height/2,-depth/2);
+ glEnd();
+ }
+ */

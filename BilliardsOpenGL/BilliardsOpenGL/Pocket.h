@@ -14,7 +14,6 @@ private:
 public:
     void Initialize(int _id, glm::vec3 _position);
     void Render();
-    void FallPocketCheck(Ball *ball, int targetBall);
     void FoulsCheck();
     void Release();
     glm::vec3 GetPosition();
