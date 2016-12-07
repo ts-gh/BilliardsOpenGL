@@ -24,3 +24,11 @@
 ・ballがpocketに落ちたかの判定を調整（ballがpocketに向かってきたのかの判定）
 ・Lightingの設定
 ・Pool台の緑の床の設定
+
+メモ
+・glutにはメインループを抜ける手立てがない（freeglutならある）ので、exitで半強制終了させる・・・
+・const glm::vec3& posにして参照渡しさせる　ー＞　たぶんOK
+・ballクラスのrender関数のカラーセットは別関数で（switchとか使って）やる　ー＞OK
+・main.cppのgame()をよりスマートに書く（excuteとかで）　ー＞　どう実装するか・・・
+	アブストラクトファクトリー
+	ストラテジー

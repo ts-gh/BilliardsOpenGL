@@ -5,7 +5,7 @@
 #include "Ball.h"
 #include "Pocket.h"
 #include "Collision.h"
-#include <stdio.h>
+#include <stdio.h>  // Debug用
 
 #define WINDOW_POSITION_X 100   //生成するウィンドウ位置のX座標
 #define WINDOW_POSITION_Y 100   //生成するウィンドウ位置のY座標
@@ -20,13 +20,13 @@ unsigned char m_key;
 float deltaTime;
 float power;
 
-//ナインボールなので
+//ナインボールなのでボールは10個
 Ball ball[10];
 
 //UI用のボール
 Ball ballUI[9];
 
-//Pocket
+//プール台のポケット
 Pocket pocket[6];
 
 //落とすべきボール（ID）

@@ -13,15 +13,16 @@ private:
     glm::vec3 position;
     glm::vec3 velocity;
 public:
-    void Initialize(int id, glm::vec3 pos);
-    void AddVelocity(glm::vec3 v);
+    void Initialize(int id, const glm::vec3& pos);
+    void AddVelocity(const glm::vec3& v);
     void Update();
     void CollisionWallCheck();
     void Render();
+    void SetColor(int id);
     void Release();
-    glm::vec3 GetPosition();
-    void SetPosition(glm::vec3 pos);
-    glm::vec3 GetVelocity();
+    glm::vec3 GetPosition() const;
+    void SetPosition(const glm::vec3& pos);
+    glm::vec3 GetVelocity() const;
     void SetIsExistFalse();
     bool GetIsExist();
     void SetIsExsist(bool isExist);
