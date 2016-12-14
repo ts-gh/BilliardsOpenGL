@@ -66,7 +66,6 @@ bool CanShootBall(Ball *ball);
 void FallPocketCheck(Pocket *pocket, Ball *ball);
 bool GameClearCheck(Ball *ball);
 void Pool();
-//void RenderCube(float width, float height, float depth);  //のちに使うかも・・・
 
 //main関数
 int main(int argc, char *argv[])
@@ -460,53 +459,3 @@ bool GameClearCheck(Ball *ball){
     }
     return true;
 }
-
-/*
- void RenderCube(float width,float height,float depth)
- {
- glBegin(GL_QUADS);
- 
- //前
- glNormal3f(0.0,0.0,-1.0);
- glVertex3f(width/2,height/2,depth/2);
- glVertex3f(-width/2,height/2,depth/2);
- glVertex3f(-width/2,-height/2,depth/2);
- glVertex3f(width/2,-height/2,depth/2);
- 
- //左
- glNormal3f(1.0,0.0,0.0);
- glVertex3f(width/2,height/2,depth/2);
- glVertex3f(width/2,height/2,-depth/2);
- glVertex3f(width/2,-height/2,-depth/2);
- glVertex3f(width/2,-height/2,depth/2);
- 
- //右
- glNormal3f(-1.0,0.0,0.0);
- glVertex3f(-width/2,height/2,-depth/2);
- glVertex3f(-width/2,height/2,depth/2);
- glVertex3f(-width/2,-height/2,depth/2);
- glVertex3f(-width/2,-height/2,-depth/2);
- 
- //後
- glNormal3f(0.0,0.0,1.0);
- glVertex3f(width/2,height/2,-depth/2);
- glVertex3f(-width/2,height/2,-depth/2);
- glVertex3f(-width/2,-height/2,-depth/2);
- glVertex3f(width/2,-height/2,-depth/2);
- 
- //上
- glNormal3f(0.0,1.0,0.0);
- glVertex3f(width/2,height/2,depth/2);
- glVertex3f(-width/2,height/2,depth/2);
- glVertex3f(-width/2,height/2,-depth/2);
- glVertex3f(width/2,height/2,-depth/2);
- 
- //下
- glNormal3f(0.0,-1.0,0.0);
- glVertex3f(width/2,-height/2,depth/2);
- glVertex3f(-width/2,-height/2,depth/2);
- glVertex3f(-width/2,-height/2,-depth/2);
- glVertex3f(width/2,-height/2,-depth/2);
- glEnd();
- }
- */
