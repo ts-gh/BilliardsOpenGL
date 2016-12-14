@@ -65,6 +65,7 @@ void UpdateScene();
 bool CanShootBall(Ball *ball);
 void FallPocketCheck(Pocket *pocket, Ball *ball);
 bool GameClearCheck(Ball *ball);
+void Pool();
 //void RenderCube(float width, float height, float depth);  //のちに使うかも・・・
 
 //main関数
@@ -87,7 +88,7 @@ int main(int argc, char *argv[])
 //初期化関数
 void Initialize()
 {
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);   //背景色の設定
+    glClearColor(0.6f, 0.6f, 0.6f, 1.0f);   //背景色の設定
     glEnable(GL_DEPTH_TEST);                //デプスバッファを使用：glutInitDisplayMode() で GLUT_DEPTH を指定する
     
     InitializeBallPosition(ball);
@@ -202,10 +203,10 @@ void InitializePocketPosition(Pocket *pocket)
     //左上から時計回りに
     pocket[0].Initialize(0, glm::vec3(-80.f, 0.f, -145.f));
     pocket[1].Initialize(1, glm::vec3(80.f, 0.f, -145.f));
-    pocket[2].Initialize(2, glm::vec3(80.f, 0.f, 0.f));
+    pocket[2].Initialize(2, glm::vec3(81.f, 0.f, 0.f));
     pocket[3].Initialize(3, glm::vec3(80.f, 0.f, 145.f));
     pocket[4].Initialize(4, glm::vec3(-80.f, 0.f, 145.f));
-    pocket[5].Initialize(5, glm::vec3(-80.f, 0.f, 0.f));
+    pocket[5].Initialize(5, glm::vec3(-81.f, 0.f, 0.f));
 }
 
 void PowerGaugeUI(float deltaTime)
@@ -217,6 +218,8 @@ void PowerGaugeUI(float deltaTime)
     //パワーゲージに応じたパワーの設定（15.fは任意）
     power = 15.f * tmp2;
     
+    glColor3d(1, 1, 1);
+    
     //外身（左上から時計回りに）
     glBegin(GL_LINE_LOOP);
     glVertex3i(100, 0, 30);
@@ -225,12 +228,23 @@ void PowerGaugeUI(float deltaTime)
     glVertex3i(100, 0, 110);
     glEnd();
     
+    //中身の背景[グラデーション]（左上から時計回りに）
+    glBegin(GL_QUADS);
+    glColor3d(1.f, 0.f, 0.f);
+    glVertex3i(100, 0, 30);
+    glVertex3i(120, 0, 30);
+    glColor3d(1.f, 1.f, 0.f);
+    glVertex3i(120, 0, 110);
+    glVertex3i(100, 0, 110);
+    glEnd();
+    
     //中身（左上から時計回りに）
+    glColor3d(1.f, 1.f, 1.f);
     glBegin(GL_QUADS);
     glVertex3i(100, 0, 110 - tmp2*80);
     glVertex3i(120, 0, 110 - tmp2*80);
-    glVertex3i(120, 0, 110);
-    glVertex3i(100, 0, 110);
+    glVertex3i(120, 0, 30);
+    glVertex3i(100, 0, 30);
     glEnd();
 }
 
@@ -288,6 +302,7 @@ void Game()
     
     /*-- Poolの壁を描画（とりあえずGame内で）--*/
     //カラー指定
+    /*
     glColor3d(1.0, 1.0, 1.0);
     
     //線描画スタイルの指定
@@ -301,7 +316,10 @@ void Game()
     
     //線描画スタイルの指定終了
     glEnd();
+    */
     /*-- /Poolの壁を描画（とりあえずGame内で）--*/
+    
+    Pool();
     
     //球が打てる状況ならパワーゲージを表示
     if(CanShootBall(ball) && !foulsCueBallFlg && !foulsDiffBallFlg){
@@ -389,6 +407,35 @@ void Result()
               0.0, 1.0, 0.0);       //視界の上方向のベクトルx,y,z
     
     DrawString("Clear", GLUT_STROKE_ROMAN, 5.f, -150.f, -50.f, 0.f);
+}
+
+void Pool(){
+    
+    //カラー指定
+    glColor3d(1.0, 1.0, 1.0);
+    
+    //線描画スタイルの指定
+    glBegin(GL_LINE_LOOP);
+    
+    //頂点指定
+    glVertex3d(-80.0, 0.0, -145.0);
+    glVertex3d(80.0, 0.0, -145.0);
+    glVertex3d(80.0, 0.0, 145.0);
+    glVertex3d(-80.0, 0.0, 145.0);
+    
+    //線描画スタイルの指定終了
+    glEnd();
+    
+    
+    glColor3d(71.f/255.f, 107.f/255.f, 85.f/255.f);
+
+    glBegin(GL_QUADS);
+    glVertex3d(-80.0, 0.0, -145.0);
+    glVertex3d(80.0, 0.0, -145.0);
+    glVertex3d(80.0, 0.0, 145.0);
+    glVertex3d(-80.0, 0.0, 145.0);
+    glEnd();
+
 }
 
 void keybord(unsigned char key, int x, int y)
