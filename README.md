@@ -1,7 +1,7 @@
-進捗状況
+#進捗状況
 
-現在の状況
-・俯瞰視点でビリヤード（ナインボール）ができます
+#現在の状況
+・俯瞰視点でビリヤード（ナインボール）ができます  
 	
 	[操作方法]
 	1. 実行ファイルを起動します
@@ -12,23 +12,23 @@
 	6. 白球以外を全て落とせばゲーム終了です
 	7. ゲーム画面およびクリア画面で "M"キーを押すことで、メニュー画面に移行します
 
-今後やること（やりたいこと）
-・音
-・カメラの回転
-・ballの移動にdeltaTimeを使う
-・CueBallがBall ball[0]に入ってるのをBall ball[10]に移動
-・各クラスのRelease()の中身を書く
-・FoulsでCueBallのPositionのセット時、他のBall上でクリックした時に無効にする
-　（現状だと、ball同士が位置を互いに分け合う）
-・Fouls時の画面表示（Fouls! ChangePlayer!）
-・ballがpocketに落ちたかの判定を調整（ballがpocketに向かってきたのかの判定）
-・Lightingの設定
-・Pool台の緑の床の設定
+#今後やること（やりたいこと） 
+・音  
+・カメラの回転  
+・ballの移動にdeltaTimeを使う  
+・CueBallがBall ball[0]に入ってるのをBall ball[10]に移動  
+・各クラスのRelease()の中身を書く  
+・FoulsでCueBallのPositionのセット時、他のBall上でクリックした時に無効にする  
+　（現状だと、ball同士が位置を互いに分け合う）  
+・Fouls時の画面表示（Fouls! ChangePlayer!）  
+・ballがpocketに落ちたかの判定を調整（ballがpocketに向かってきたのかの判定）  
+・Lightingの設定  
+・Pool台の緑の床の設定  
 
-メモ
-・glutにはメインループを抜ける手立てがない（freeglutならある）ので、exitで半強制終了させる・・・
-・const glm::vec3& posにして参照渡しさせる　ー＞　たぶんOK
-・ballクラスのrender関数のカラーセットは別関数で（switchとか使って）やる　ー＞OK
-・main.cppのgame()をよりスマートに書く（excuteとかで）　ー＞　どう実装するか・・・
+#メモ
+・glutにはメインループを抜ける手立てがない（freeglutならある）ので、exitで半強制終了させる・・・  
+・const glm::vec3& posにして参照渡しさせる　ー＞　たぶんOK  
+・ballクラスのrender関数のカラーセットは別関数で（switchとか使って）やる　ー＞OK  
+・main.cppのgame()をよりスマートに書く（excuteとかで）　ー＞　どう実装するか・・・  
 	アブストラクトファクトリー
 	ストラテジー
