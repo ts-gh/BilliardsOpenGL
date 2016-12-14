@@ -299,70 +299,12 @@ void Game()
               0.0, 0.0, 0.0,        //視界の中心位置の参照点座標x,y,z
               0.0, 0.0, -1.0);      //視界の上方向のベクトルx,y,z
     
-    
-    /*-- Poolの壁を描画（とりあえずGame内で）--*/
-    //カラー指定
-    /*
-    glColor3d(1.0, 1.0, 1.0);
-    
-    //線描画スタイルの指定
-    glBegin(GL_LINE_LOOP);
-    
-    //頂点指定
-    glVertex3d(-80.0, 0.0, -145.0);
-    glVertex3d(80.0, 0.0, -145.0);
-    glVertex3d(80.0, 0.0, 145.0);
-    glVertex3d(-80.0, 0.0, 145.0);
-    
-    //線描画スタイルの指定終了
-    glEnd();
-    */
-    /*-- /Poolの壁を描画（とりあえずGame内で）--*/
-    
     Pool();
     
     //球が打てる状況ならパワーゲージを表示
     if(CanShootBall(ball) && !foulsCueBallFlg && !foulsDiffBallFlg){
         PowerGaugeUI(deltaTime);
     }
-    
-    /*
-    //BallUIのRender
-    for(int i=0; i<10; i++){
-        //本家のボールが存在してたらRender
-        if(ball[i+1].GetIsExist()){
-            ballUI[i].Render();
-        }
-    }
-    
-    //BallのUpdate
-    for(int i=0; i<10; i++){
-        ball[i].Update();
-    }
-    
-    //Ballと壁とのCollisionチェック
-    for(int i=0; i<10; i++){
-        ball[i].CollisionWallCheck();
-    }
-    
-    //Ball同士のCollisionチェック
-    CollisionBallCheck(ball);
-    
-    //BallのRender
-    for(int i=0; i<10; i++){
-        if(ball[i].GetIsExist()){
-            ball[i].Render();
-        }
-    }
-    
-    //PocketのRender
-    for(int i=0; i<6; i++){
-        pocket[i].Render();
-    }
-    
-    //pocketとballのcheck
-    FallPocketCheck(pocket, ball);
-    */
     
     //PocketのRender
     for(int i=0; i<6; i++){

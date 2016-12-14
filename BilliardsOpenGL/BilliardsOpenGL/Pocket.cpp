@@ -27,12 +27,12 @@ void Pocket::Render()
 
 void Pocket::FoulsCheck()
 {
-    //未実装
+    //未実装（現状ここではやらない）
 }
 
 void Pocket::Release()
 {
-    //未実装
+    
 }
 
 glm::vec3 Pocket::GetPosition()

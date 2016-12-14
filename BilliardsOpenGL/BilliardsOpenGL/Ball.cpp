@@ -121,7 +121,7 @@ void Ball::SetColor(int id)
 
 void Ball::Release()
 {
-    //未実装
+    
 }
 
 glm::vec3 Ball::GetPosition() const
