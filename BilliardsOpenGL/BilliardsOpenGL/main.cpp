@@ -260,6 +260,9 @@ void UpdateScene()
         Scene = eScene_Result;
         Initialize();
     }
+    
+    //m_keyのクリア
+    m_key = 0;
 }
 
 void Menu()
@@ -305,6 +308,7 @@ void Game()
         PowerGaugeUI(deltaTime);
     }
     
+    /*
     //BallUIのRender
     for(int i=0; i<10; i++){
         //本家のボールが存在してたらRender
@@ -340,6 +344,40 @@ void Game()
     
     //pocketとballのcheck
     FallPocketCheck(pocket, ball);
+    */
+    
+    //PocketのRender
+    for(int i=0; i<6; i++){
+        pocket[i].Render();
+    }
+    
+    for(int i=0; i<10; i++){
+        
+        //BallUIのRender
+        if(ball[i+1].GetIsExist()){
+            ballUI[i].Render();
+        }
+        
+        if(ball[i].GetIsExist()){
+            
+            //BallのUpdate
+            ball[i].Update();
+            
+            //BallのRender
+            ball[i].Render();
+            
+            //Ballと壁とのCollisionチェック
+            ball[i].CollisionWallCheck();
+            
+        }
+    }
+    
+    //Ball同士のCollisionチェック
+    CollisionBallCheck(ball);
+    
+    //PocketとBallのCollisionチェック
+    FallPocketCheck(pocket, ball);
+    
 }
 
 void Result()
