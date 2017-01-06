@@ -25,3 +25,20 @@
 ・const glm::vec3& posにして参照渡しさせる　ー＞　たぶんOK  
 ・ballクラスのrender関数のカラーセットは別関数で（switchとか使って）やる　ー＞　OK  
 ・main.cppのgame()をよりスマートに書く（excuteとかで）　ー＞　まとめはしましたが・・・  
+
+#最終レビューを受けて（01/06更新）
+・今の書き方だとクラスが肥大化する可能性がある。　　
+・オブジェクトの抽象化ができていない。　　
+・レンダーするオブジェクトと、更新を行うオブジェクトを分けていない。　　
+・基本的にポインタ渡しではなく参照渡しが良い（ポインタ渡しだと、それが必要な関数なのかと勘違いしてしまう）。　　
+・設計について考えよう（勉強しよう）。　　
+
+参考サイトURL　　
+ゲーム開発とデザインパターン　　
+　http://www.slideshare.net/TakashiKomada/ss-26642148　　
+
+Halo2 におけるHFSM(階層型有限状態マシン) 【ビヘイビアツリー解説】　　
+　http://www.slideshare.net/youichiromiyake/halo2-hfsm?qid=066a5423-fcea-4be1-ae16-628143f2613e&v=&b=&from_search=1　　
+
+タスクシステムと「ゆるゆる」なキャラクタ　　
+　http://marupeke296.com/GDEV_No3_TaskSystem.html　　
